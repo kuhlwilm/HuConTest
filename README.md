@@ -4,7 +4,7 @@ A Human Contamination Test for Great Ape Samples
 ## Description
 This is a script for testing human contamination in great ape samples. It uses data mapped to the human genome, and counts the overlap with diagnostic positions where the other great apes differ from humans. This can be useful for any type of sample, including tissue, fecal or ancient DNA from from any of the great ape species (Bonobos, Chimpanzees, Gorillas and Orangutans).
 
-More detail is provided in a technical note, for now in bioRxiv: doiXX. Please cite if you use
+More detail is provided in a technical note, published in Genome Biology & Evolution 2021: https://doi.org/10.1093/gbe/evab117. Please cite if you use!
 
 
 ## Preparation & Requirements
