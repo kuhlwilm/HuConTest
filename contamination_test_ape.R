@@ -20,11 +20,11 @@ fafile=c(infor[1]);names(fafile)<-refg
 
 # get the data through mpileup and overlap with diagnostic sites
 cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -R ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
-## note that the tabs are here represented as '\\t' instead of '\t' (to run with R system() )
+## Note that the tabs are here represented as '\\t' instead of '\t' (to run with R system() ). If you are debugging/testing step by step on the command line, this needs to be corrected.
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
 
-if (length(ctab)==0) { print('It seems something went wrong with the bam file or samtools!');q() }
+if (length(ctab)==0) { print('It seems something went wrong with the bam file or bcftools!');q() }
 
 # processing
 ctab<-do.call(rbind,strsplit(ctab,split=" "))
