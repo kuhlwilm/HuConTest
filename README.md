@@ -1,10 +1,13 @@
 # HuConTest
-A Human Contamination Test for Great Ape Samples
+A Human Contamination Test for Great Ape Samples (bcftools mpileup version)
 
 ## Description
 This is a script for testing human contamination in great ape samples. It uses data mapped to the human genome, and counts the overlap with diagnostic positions where the other great apes differ from humans. This can be useful for any type of sample, including tissue, fecal or ancient DNA from from any of the great ape species (Bonobos, Chimpanzees, Gorillas and Orangutans).
 
 More detail is provided in a technical note, published in Genome Biology & Evolution 2021: https://doi.org/10.1093/gbe/evab117. Please cite if you use!
+
+## UPDATE SEPTEMBER 2023
+Samtools mpileup was deprecated in more recent versions, instead bcftools mpileup was recommended. This is now implemented in the code. The old version with samtools can still be found [here](https://github.com/kuhlwilm/HuConTest/tree/8638ad7a27bd8fd499760288e4245b07c55acd54)
 
 
 ## Preparation & Requirements
@@ -12,7 +15,7 @@ First, you need to have installations of the following programs:
 
 R (>=3.2) (https://www.r-project.org/)
 
-SAMTOOLS/TABIX (>=1.0) (http://www.htslib.org/)
+BCFTOOLS (http://www.htslib.org/)
 
 No specific R libraries are required.
 
@@ -55,9 +58,8 @@ Rscript --vanilla contamination_test_ape.R ${argum}
 ```
 
 ## Considerations
-- For the reference genome, oly paths including the strings "hg19" or "hg38" are allowed, and they should point to exactly one of these versions of the human reference genome (hg19 or hg38/GRCh38). The reference genome should be a version with "chr" in the chromosome names. Obviously, it has to be the same genome your sequences were mapped to. 
+- For the reference genome, only paths including the strings "hg19" or "hg38" are allowed, and they should point to exactly one of these versions of the human reference genome (hg19 or hg38/GRCh38). Patches should not matter regarding the coordinates. The reference genome should be a version with "chr" in the chromosome names. Obviously, it has to be the same genome your sequences were mapped to.
 - Different versions of SAMTOOLS may work differently. SAMTOOLS 1.0 does not process files with CRAM extension. Files with BAM extension work faster in either version.
 - Some filtering of the raw reads is advisable to get appropriate results. Mapped reads should have aligned sequences/inserts of >= 35bp. Spurious alignments (for example, from bacteria in fecal or ancient samples) will be identical to the reference genome and appear as "contaminant".
-- If you get very high numbers (40%, 80%), you should check if you are testing the right species. If you get almost 100%, it might be either a human library, or spurious alignments (see previous point).
+- If you get very high numbers (40%, 80%), you should check if you are testing the right species. Using the diagnostic sites of orangutans does not work perfectly with gorilla, but gives intermediate estimates. The same is true if your sequencing data comes from another primate species. If you get almost 100%, it might be either a human library, or spurious alignments (see previous point).
 - In principle, the test will be sensitive with at least ~500 read pairs mapped to the reference genome, better more. Less than that may result in absence of observations.
-
