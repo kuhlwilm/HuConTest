@@ -7,7 +7,7 @@ This is a script for testing human contamination in great ape samples. It uses d
 More detail is provided in a technical note, published in Genome Biology & Evolution 2021: https://doi.org/10.1093/gbe/evab117. Please cite if you use!
 
 ## UPDATE SEPTEMBER 2023
-Samtools mpileup was deprecated in more recent versions, instead bcftools mpileup was recommended. This is now implemented in the code. The old version with samtools can still be found [here](https://github.com/kuhlwilm/HuConTest/tree/8638ad7a27bd8fd499760288e4245b07c55acd54)
+Samtools mpileup was deprecated in more recent versions, instead bcftools mpileup was recommended. This is now implemented in the code. The old version with samtools can still be found [here](https://github.com/kuhlwilm/HuConTest/tree/8638ad7a27bd8fd499760288e4245b07c55acd54).
 
 
 ## Preparation & Requirements
