@@ -15,11 +15,11 @@ refg=ifelse(length(grep("hg19",infor[1]))==1,"hg19",ifelse(length(grep("hg38|GRC
 
 # define input files
 lifile=c(paste(sourceDir,"data/h_",spec,"_diffR.lst.gz ",sep=""),paste(sourceDir,"data/h38_",spec,"_diff.lst.gz ",sep=""));names(lifile)<-c("hg19","hg38");lifile=lifile[refg]
-bedfile=c(paste(sourceDir,"data/h_",spec,"_diffR.bed.gz ",sep=""),paste(sourceDir,"data/h38_",spec,"_diff.bed.gz ",sep=""));names(bedfile)<-c("hg19","hg38");bedfile=bedfile[refg]
+bedfile=c(paste(sourceDir,"data/h_",spec,"_diffR.pos.gz ",sep=""),paste(sourceDir,"data/h38_",spec,"_diff.pos.gz ",sep=""));names(bedfile)<-c("hg19","hg38");bedfile=bedfile[refg]
 fafile=c(infor[1]);names(fafile)<-refg
 
 # get the data through mpileup and overlap with diagnostic sites
-cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -R ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -T ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
 ## Note that the tabs are here represented as '\\t' instead of '\t' (to run with R system() ). If you are debugging/testing step by step on the command line, this needs to be corrected.
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
