@@ -7,7 +7,7 @@ This is a script for testing human contamination in great ape samples. It uses d
 More detail is provided in a technical note, published in Genome Biology & Evolution 2021: https://doi.org/10.1093/gbe/evab117. Please cite if you use!
 
 ## UPDATE SEPTEMBER 2023
-Samtools mpileup was deprecated in more recent versions, instead bcftools mpileup was recommended. This is now implemented in the code. The old version with samtools can still be found [here](https://github.com/kuhlwilm/HuConTest/tree/8638ad7a27bd8fd499760288e4245b07c55acd54).
+Samtools mpileup was deprecated in more recent versions, instead bcftools mpileup was recommended. This is now implemented in the code. The old version with samtools can still be found [here](https://github.com/kuhlwilm/HuConTest/tree/8638ad7a27bd8fd499760288e4245b07c55acd54). Furthermore, in this version target files (only containing the position) are used instead of bed files.
 
 
 ## Preparation & Requirements
@@ -25,7 +25,10 @@ Create a directory from which to run the test script. Retrieve the "contaminatio
 If you are working on a cluster, which is likely if you use this kind of sequencing data, you may want to use arrays jobs for processing several samples in parallel. Then consider the "contamination_ape.sh" wrapper as well.
 
 Create a subdirectory named "data".
-Retrieve these files from FigShare and store them in the "data" subdirectory : https://dx.doi.org/10.6084/m9.figshare.14237834.
+
+Retrieve these files from FigShare and store them in the "data" subdirectory : https://dx.doi.org/10.6084/m9.figshare.24112359.
+
+*Note: This is the version with position files instead of bed files.*
 
 Then you should be ready.
 
