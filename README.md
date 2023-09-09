@@ -20,7 +20,7 @@ BCFTOOLS (http://www.htslib.org/)
 No specific R libraries are required.
 
 
-Second, you need to download the script and the data. This is tables with the diagnostic sites to be retrieved, and the great ape allele at these sites, for each species complex.
+Second, you need to download the script and the data. The data consists of tables with the diagnostic sites to be retrieved, and the great ape allele at these sites, for each species complex.
 Create a directory from which to run the test script. Retrieve the "contamination_test_ape.R" script from here, and store it in this directory.
 If you are working on a cluster, which is likely if you use this kind of sequencing data, you may want to use arrays jobs for processing several samples in parallel. Then consider the "contamination_ape.sh" wrapper as well.
 
@@ -39,7 +39,7 @@ The FIRST is the path to the reference genome to use.
 
 The SECOND is the species to test, only three inputs are supported here: "pan" (chimpanzee or bonobo), "orang" or "gorilla".
 
-The THIRD argument is the full path to a BAM file (or CRAM, if necessary), containing sequence alignments to the human reference genome. 
+The THIRD argument is the full path to a BAM file (or CRAM, if necessary), containing sequence alignments to the human reference genome.
 
 The full input string should resemble this:
 
@@ -47,11 +47,15 @@ The full input string should resemble this:
 argum="/your/assembly/hg19.fa,pan,/your/test/file.bam"
 ```
 
-The script itself is using R and will call samtools mpileup for species-specific diagnostic sites, count reads that look like human or the species of choice, and calculate contamination & standard deviation.
+The script itself is using R and will call bcftools mpileup for species-specific diagnostic sites, count reads that look like human or the species of choice, and calculate contamination & standard deviation across chromosomes.
+
 The calculation is simple: (sum of reads with human allele)/(sum of all reads with any allele).
 
+
+
 The output is FOUR numbers: The point estimate of % contaminating reads, point estimate minus one standard deviation across 22 chromosomes, point estimate plus one SD, and the total number of sites covered.
-The script spits it out on the command line.
+
+The script spits it out on the command line. If you want it to be written into a separate file, add something like "> your/file.txt" to the command line.
 
 
 In order to apply the script, just run:
