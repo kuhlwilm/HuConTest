@@ -24,7 +24,8 @@ cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -T ",be
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
 
-if (length(ctab)==0) { print('It seems something went wrong with the bam file or bcftools!');q() }
+# check if bam file is sorted, otherwise generic error message
+if (length(ctab)==0) { if(grep("SO:coordinate",system(paste("samtools view -T ",fafile," -H ",infor[3]," | grep @HD"),intern=T))==F) { print('Is your bam file sorted?');q() } else { print('It seems something went wrong with the bam file (or bcftools)!');q() } }
 
 # processing
 ctab<-do.call(rbind,strsplit(ctab,split=" "))
@@ -33,7 +34,7 @@ ctab[,5]<-gsub("chr","",ctab[,5])
 
 # likely human contamination
 csel<-which(ctab[,6]==ctab[,4]|ctab[,4]%in%c("<X>","<*>"))
-ctab[,3]<-do.call(rbind,strsplit(as.character(ctab[,3]),split=","))[,2]
+ctab[,3]<-suppressWarnings(do.call(rbind,strsplit(as.character(ctab[,3]),split=","))[,2])
 # warning message about number of columns can be ignored - only the number of reads supporting the second allele matters
 csu<-sum(as.numeric(ctab[csel,2])-as.numeric(ctab[csel,3]))
 nsu<-sum(as.numeric(ctab[,2]))
