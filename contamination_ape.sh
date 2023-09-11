@@ -8,7 +8,7 @@
 #SBATCH --error=~/logs/%j-%a.err
 
 ## these modules might be different depending on the system, e.g.
-module load bcftools/1.18 --auto
+module load bcftools/1.18 samtools --auto
 module load R/4.3.0 --auto
 
 ## this should be executed directly in the directory of the HuConTest script
