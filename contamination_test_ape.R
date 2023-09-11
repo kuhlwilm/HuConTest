@@ -31,6 +31,7 @@ if (length(ctab)==0) { if(grep("SO:coordinate",system(paste("samtools view -T ",
 ctab<-do.call(rbind,strsplit(ctab,split=" "))
 ctab[,4]<-gsub(",<X>|,<\\*>","",ctab[,4])
 ctab[,5]<-gsub("chr","",ctab[,5])
+ctab<-ctab[which(ctab[,2]>0),,drop=F]
 
 # likely human contamination
 csel<-which(ctab[,6]==ctab[,4]|ctab[,4]%in%c("<X>","<*>"))
