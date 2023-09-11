@@ -15,7 +15,7 @@ First, you need to have installations of the following programs:
 
 R (>=3.2) (https://www.r-project.org/)
 
-BCFTOOLS (http://www.htslib.org/)
+BCFTOOLS (http://www.htslib.org/); SAMTOOLS is also required to check if the bam file is sorted, but will only be invoked if necessary. 
 
 No specific R libraries are required.
 
