@@ -39,7 +39,10 @@ file=$(sed -n ${ID}p /your/file/names.list)
 # The output is FOUR numbers: point estimate of % contaminating reads, point estimate minus one standard deviation across 22 chromosomes, point estimate plus one SD, and the total number of sites covered.
 # The script spits it out on the command line.
 
+# Now, you can define the modes "bam" to check bam files, or "vcf" to check vcf files!
+mode="vcf"
+
 argum="/your/assembly/hg19.fa,pan,$file"
-Rscript --vanilla contamination_test_ape.R ${argum}
+Rscript --vanilla contamination_test_ape.R ${argum} ${mode}
 
 exit

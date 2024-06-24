@@ -1,12 +1,15 @@
 #!/usr/bin/r
-position=(commandArgs(TRUE))
+ip=unlist(strsplit(as.character(unlist((commandArgs(TRUE)))),split=" "))
+position=ip[1]
+mode=ip[2]
 options("scipen"=100)
 sourceDir <- getSrcDirectory(function() {})
+bcft<-"/gpfs/data/fs71737/sriyahi1/Software/bcftools/bcftools-1.16/bcftools"
 
-if(length(position)==0) { cat('This script needs some input! That is a comma-separated string of characters of the form:\nreferencegenome.fa,species,testfile.bam"\nHave a look at the documentation.\n');q() }
+if(length(position)==0) { cat('This script needs some input! That is a comma-separated string of characters of the form:\nreferencegenome.fa,species,testfile.bam/vcf"\nHave a look at the documentation.\n');q() }
 
 infor=unlist(strsplit(as.character(position),split=","))
-## infor[1] is the fasta file, infor[2] is the species, infor[3] the test bam file
+## infor[1] is the fasta file, infor[2] is the species, infor[3] the test bam/vcf file
 
 if (!infor[2]%in%c("pan","orang","gorilla")) { print('Species must be "pan", "orang", or "gorilla"!');q() }
 if (length(grep("hg19|hg38|GRCh38",infor[1]))==0) { print('Reference genome must contain "hg19", or "hg38"/"GRCh38"!');q() }
@@ -19,8 +22,15 @@ bedfile=c(paste(sourceDir,"data/h_",spec,"_diffR.pos.gz ",sep=""),paste(sourceDi
 fafile=c(infor[1]);names(fafile)<-refg
 
 # get the data through mpileup and overlap with diagnostic sites
-cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -T ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+if (mode == "bam" ) { 
+  cmnd<-paste("bcftools mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -T ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+  }
 ## Note that the tabs are here represented as '\\t' instead of '\t' (to run with R system() ). If you are debugging/testing step by step on the command line, this needs to be corrected.
+
+## development mode for "vcf"!
+if (mode == "vcf") {
+  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS\t[%DP]\t[%AD]\t%ALT\t%CHROM\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+  }
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
 
