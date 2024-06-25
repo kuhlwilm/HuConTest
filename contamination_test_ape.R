@@ -1,5 +1,6 @@
 #!/usr/bin/r
 ip=unlist(strsplit(as.character(unlist((commandArgs(TRUE)))),split=" "))
+print(ip)
 position=ip[1]
 mode=ip[2]
 options("scipen"=100)
