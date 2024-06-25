@@ -1,8 +1,9 @@
 #!/usr/bin/r
-ip=unlist(strsplit(as.character(unlist((commandArgs(TRUE)))),split=" "))
-print(ip)
+ip=unlist(strsplit(as.character(commandArgs(TRUE)),split=" "))
 position=ip[1]
 mode=ip[2]
+print(position)
+print(mode)
 options("scipen"=100)
 sourceDir <- getSrcDirectory(function() {})
 bcft<-"/gpfs/data/fs71737/sriyahi1/Software/bcftools/bcftools-1.16/bcftools"
@@ -30,7 +31,7 @@ if (mode == "bam" ) {
 
 ## development mode for "vcf"!
 if (mode == "vcf") {
-  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS [%DP] [%AD] %ALT %CHROM\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS [%DP] [%AD] %ALT %CHROM\\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
   }
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
