@@ -30,7 +30,7 @@ if (mode == "bam" ) {
 
 ## development mode for "vcf"!
 if (mode == "vcf") {
-  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS\t[%DP]\t[%AD]\t%ALT\t%CHROM\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
+  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS [%DP] [%AD] %ALT %CHROM\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
   }
 
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
