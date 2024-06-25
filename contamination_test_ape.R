@@ -2,8 +2,6 @@
 ip=unlist(strsplit(as.character(commandArgs(TRUE)),split=" "))
 position=ip[1]
 mode=ip[2]
-print(position)
-print(mode)
 options("scipen"=100)
 sourceDir <- getSrcDirectory(function() {})
 bcft<-"/gpfs/data/fs71737/sriyahi1/Software/bcftools/bcftools-1.16/bcftools"
