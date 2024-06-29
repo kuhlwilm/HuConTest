@@ -25,11 +25,6 @@ fafile=c(infor[1]);names(fafile)<-refg
   cmnd<-paste(bcft," mpileup -d 2000 --ignore-RG -a FORMAT/DP,FORMAT/AD -T ",bedfile," --fasta-ref ",fafile," ",infor[3]," 2>/dev/null | zgrep -v '^#' | awk '{print $1,$2,$10,$5,$1}' | sed 's/:/\\t/g' | sed 's/ /:/' | sed 's/ /\\t/g' | awk -v OFS='\\t' -v FS='\\t' '{print $1,$3,$4,$5,$6}' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
 ## Note that the tabs are here represented as '\\t' instead of '\t' (to run with R system() ). If you are debugging/testing step by step on the command line, this needs to be corrected.
 
-### development mode for "vcf"!
-#if (mode == "vcf") {
-#  cmnd<-paste(bcft," query -T ",bedfile, " ",infor[3]," -f '%CHROM:%POS [%DP] [%AD] %ALT %CHROM\\n' | sort -k 1b,1 | join -j 1 - <(gunzip -c ",lifile,") ",sep="")
-#  }
-
 ctab<-system(paste("/bin/bash -c ", shQuote(cmnd),sep=""),intern=T)
 
 # check if bam file is sorted, otherwise generic error message
