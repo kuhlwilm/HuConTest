@@ -40,9 +40,9 @@ file=$(sed -n ${ID}p /your/file/names.list)
 # The script spits it out on the command line.
 
 # Now, you can define the modes "bam" to check bam files, or "vcf" to check vcf files!
-mode="vcf"
+bcft="/gpfs/data/fs71737/sriyahi1/Software/bcftools/bcftools-1.16/bcftools"
 
 argum="/your/assembly/hg19.fa,pan,$file"
-Rscript --vanilla contamination_test_ape.R ${argum} ${mode}
+Rscript --vanilla contamination_test_ape.R ${argum} ${bcft}
 
 exit
